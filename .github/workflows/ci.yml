@@ -1,0 +1,61 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8
+      - name: Setup Go
+        uses: actions/setup-go@c4a742cab115ed795e34d4513e2cf7d472deb55f
+        with:
+          go-version: 1.17.1
+      - name: Build
+        uses: goreleaser/goreleaser-action@v3
+        with:
+          version: latest
+          args: --rm-dist --snapshot
+
+  test:
+    name: Test
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8
+      - name: Setup Go
+        uses: actions/setup-go@c4a742cab115ed795e34d4513e2cf7d472deb55f
+        with:
+          go-version: 1.17.1
+      - name: Test
+        run: go test ./...
+
+  lint:
+    name: Lint
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8
+      - name: Setup Go
+        uses: actions/setup-go@c4a742cab115ed795e34d4513e2cf7d472deb55f
+        with:
+          go-version: 1.17.1
+      - name: Check Modules
+        run: |
+          go mod tidy
+          if [ ! -z "$(git status --porcelain=v1)" ]; then
+            >&2 echo "Please run \`go mod tidy\` and commit the result."
+            exit 1
+          fi
+      - name: Lint
+        uses: golangci/golangci-lint-action@07db5389c99593f11ad7b44463c2d4233066a9b1
+        with:
+          version: v1.29
