@@ -7,7 +7,7 @@ require (
 	github.com/chrisgavin/paginated-go-gh v1.0.0
 	github.com/cli/go-gh v1.0.0
 	github.com/pkg/errors v0.9.1
-	github.com/sirupsen/logrus v1.9.0
+	github.com/sirupsen/logrus v1.9.3
 	github.com/spf13/cobra v1.6.1
 )
 
