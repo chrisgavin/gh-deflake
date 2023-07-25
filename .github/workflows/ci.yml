@@ -56,6 +56,6 @@ jobs:
             exit 1
           fi
       - name: Lint
-        uses: golangci/golangci-lint-action@07db5389c99593f11ad7b44463c2d4233066a9b1
+        uses: golangci/golangci-lint-action@639cd343e1d3b897ff35927a75193d57cfcba299
         with:
           version: v1.29
