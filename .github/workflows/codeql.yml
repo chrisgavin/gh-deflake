@@ -8,6 +8,11 @@ on:
     branches:
       - master
 
+permissions:
+  actions: read
+  contents: read
+  security-events: write
+
 jobs:
   codeql:
     runs-on: ubuntu-22.04
