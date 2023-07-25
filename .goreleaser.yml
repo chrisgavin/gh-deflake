@@ -1,0 +1,12 @@
+project_name: gh-dispatch
+
+builds:
+  - goos: [linux, darwin, windows]
+    goarch: [amd64, arm64]
+    ldflags:
+      - -X github.com/chrisgavin/gh-dispatch/internal/version.version={{.Version}}
+      - -X github.com/chrisgavin/gh-dispatch/internal/version.commit={{.Commit}}
+
+archives:
+  - format: binary
+    name_template: "gh-dispatch-{{.Os}}-{{.Arch}}"
