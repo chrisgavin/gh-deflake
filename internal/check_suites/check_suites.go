@@ -10,25 +10,24 @@ import (
 )
 
 type CheckSuite struct {
-	ID                int64       `json:"id"`
-	Status            string      `json:"status"`
-	Conclusion        string      `json:"conclusion"`
-	RunsRerequestable bool        `json:"runs_rerequestable"`
-	App               actions.App `json:"app"`
+	ID                   int64       `json:"id"`
+	Status               string      `json:"status"`
+	Conclusion           string      `json:"conclusion"`
+	RunsRerequestable    bool        `json:"runs_rerequestable"`
+	App                  actions.App `json:"app"`
+	LatestCheckRunsCount int         `json:"latest_check_runs_count"`
 }
 
 type CheckSuites struct {
 	CheckSuites []CheckSuite `json:"check_suites"`
 }
 
-func FilterFailedCheckSuites(checkSuites *CheckSuites) []CheckSuite {
-	var failedCheckSuites []CheckSuite
-	for _, checkSuite := range checkSuites.CheckSuites {
-		if checkSuite.Status == "completed" && checkSuite.Conclusion != "success" && checkSuite.Conclusion != "skipped" && checkSuite.Conclusion != "neutral" {
-			failedCheckSuites = append(failedCheckSuites, checkSuite)
-		}
-	}
-	return failedCheckSuites
+func (checkSuite *CheckSuite) IsCompleted() bool {
+	return checkSuite.Status == "completed"
+}
+
+func (checkSuite *CheckSuite) IsSuccessful() bool {
+	return checkSuite.Conclusion == "success" || checkSuite.Conclusion == "skipped" || checkSuite.Conclusion == "neutral"
 }
 
 func GetCheckSuites(client api.RESTClient, repository repository.Repository, ref string) (*CheckSuites, error) {
