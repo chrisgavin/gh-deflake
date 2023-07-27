@@ -71,38 +71,39 @@ var rootCmd = &cobra.Command{
 			}
 
 			for _, checkSuite := range checkSuites.CheckSuites {
-				if checkSuite.Status != "completed" {
+				// A check suite is created for every installed GitHub App, but some don't run any checks so these remain permanently queued.
+				if checkSuite.LatestCheckRunsCount == 0 {
+					continue
+				}
+				if !checkSuite.IsCompleted() || !checkSuite.IsSuccessful() {
 					allSuitesGreen = false
 				}
-			}
-
-			for _, checkSuite := range checkSuites.CheckSuites {
-				if !checkSuite.RunsRerequestable && checkSuite.App.Slug != actions.ActionsAppSlug {
+				if checkSuite.IsCompleted() && !checkSuite.IsSuccessful() && !checkSuite.RunsRerequestable && checkSuite.App.Slug != actions.ActionsAppSlug {
 					fmt.Printf("Check suite is not rerunnable: %d\n", checkSuite.ID)
-				} else {
-					checkRuns, err := check_runs.GetCheckRuns(ghClient, repository, checkSuite.ID)
-					if err != nil {
-						return err
-					}
-					failedCheckRuns := check_runs.FilterFailedCheckRuns(checkRuns)
-					if len(failedCheckRuns) > 0 {
-						allSuitesGreen = false
-					}
-					for _, checkRun := range failedCheckRuns {
-						if checkSuite.App.Slug != actions.ActionsAppSlug {
-							err := check_runs.RerequestCheckRun(ghClient, repository, checkRun.ID)
-							if err != nil {
-								return err
-							}
-						} else {
-							actionsRunID, err := actions.ExtractActionsRunIDFromURL(checkRun.HTMLURL)
-							if err != nil {
-								return err
-							}
-							err = actions.RerunActionsWorkflow(ghClient, repository, actionsRunID)
-							if err != nil {
-								return err
-							}
+					continue
+				}
+				checkRuns, err := check_runs.GetCheckRuns(ghClient, repository, checkSuite.ID)
+				if err != nil {
+					return err
+				}
+				failedCheckRuns := check_runs.FilterFailedCheckRuns(checkRuns)
+				if len(failedCheckRuns) > 0 {
+					allSuitesGreen = false
+				}
+				for _, checkRun := range failedCheckRuns {
+					if checkSuite.App.Slug != actions.ActionsAppSlug {
+						err := check_runs.RerequestCheckRun(ghClient, repository, checkRun.ID)
+						if err != nil {
+							return err
+						}
+					} else {
+						actionsRunID, err := actions.ExtractActionsRunIDFromURL(checkRun.HTMLURL)
+						if err != nil {
+							return err
+						}
+						err = actions.RerunActionsWorkflow(ghClient, repository, actionsRunID)
+						if err != nil {
+							return err
 						}
 					}
 				}
