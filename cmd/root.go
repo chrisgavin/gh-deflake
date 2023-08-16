@@ -29,8 +29,8 @@ var SilentErr = errors.New("SilentErr")
 var pullRequestRegex = regexp.MustCompile(`^(https?://[^/]+/[a-zA-Z0-9-]+/[a-zA-Z0-9-]+)/pull/([0-9]+)$`)
 
 var rootCmd = &cobra.Command{
-	Use:           "gh dispatch <workflow>",
-	Short:         "A GitHub CLI extension that makes it easy to dispatch GitHub Actions workflows.",
+	Use:           "gh deflake <pull request>",
+	Short:         "A GitHub CLI extension for rerunning flaky CI until it passes.",
 	Version:       fmt.Sprintf("%s (%s)", version.Version(), version.Commit()),
 	SilenceErrors: true,
 	SilenceUsage:  true,
