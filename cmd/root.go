@@ -16,6 +16,7 @@ import (
 	"github.com/chrisgavin/paginated-go-gh/pkg/paginated"
 	"github.com/cli/go-gh/pkg/repository"
 	"github.com/pkg/errors"
+	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )
 
@@ -79,7 +80,7 @@ var rootCmd = &cobra.Command{
 					allSuitesGreen = false
 				}
 				if checkSuite.IsCompleted() && !checkSuite.IsSuccessful() && !checkSuite.RunsRerequestable && checkSuite.App.Slug != actions.ActionsAppSlug {
-					fmt.Printf("Check suite is not rerunnable: %d\n", checkSuite.ID)
+					log.Warnf("Check suite is not rerunnable: %d", checkSuite.ID)
 					continue
 				}
 				checkRuns, err := check_runs.GetCheckRuns(ghClient, repository, checkSuite.ID)
@@ -96,6 +97,7 @@ var rootCmd = &cobra.Command{
 						if err != nil {
 							return err
 						}
+						log.Infof("Rerun triggered for check run %s.", checkRun.HTMLURL)
 					} else {
 						actionsRunID, err := actions.ExtractActionsRunIDFromURL(checkRun.HTMLURL)
 						if err != nil {
@@ -105,11 +107,13 @@ var rootCmd = &cobra.Command{
 						if err != nil {
 							return err
 						}
+						log.Infof("Rerun triggered for actions workflow run %s (%d).", checkRun.HTMLURL, actionsRunID)
 					}
 				}
 			}
 
 			if allSuitesGreen {
+				log.Info("All check suites are now green.")
 				break
 			}
 
