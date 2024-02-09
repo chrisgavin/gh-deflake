@@ -16,5 +16,5 @@ gh extension upgrade gh-deflake
 ## Usage
 
 ```sh
-gh dispatch <workflow> [flags]
+gh deflake <pull request> [flags]
 ```
