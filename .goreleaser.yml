@@ -6,6 +6,8 @@ builds:
     ldflags:
       - -X github.com/chrisgavin/gh-dispatch/internal/version.version={{.Version}}
       - -X github.com/chrisgavin/gh-dispatch/internal/version.commit={{.Commit}}
+    env:
+      - CGO_ENABLED=0
 
 archives:
   - format: binary
