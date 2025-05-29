@@ -27,29 +27,31 @@ var rootFlags = rootFlagFields{}
 
 var SilentErr = errors.New("SilentErr")
 
-var pullRequestRegex = regexp.MustCompile(`^(https?://[^/]+/[a-zA-Z0-9-]+/[a-zA-Z0-9-]+)/pull/([0-9]+)$`)
+var baseRegex = regexp.MustCompile(`^(https?://[^/]+/[a-zA-Z0-9-]+/[a-zA-Z0-9-]+)/(.*)$`)
+var pullRequestRegex = regexp.MustCompile(`^pull/([0-9]+)$`)
+var commitRegex = regexp.MustCompile(`^commits?/([a-f0-9]+)$`)
 
 var rootCmd = &cobra.Command{
-	Use:           "gh deflake <pull request>",
+	Use:           "gh deflake <pull request / commit URL>",
 	Short:         "A GitHub CLI extension for rerunning flaky CI until it passes.",
 	Version:       fmt.Sprintf("%s (%s)", version.Version(), version.Commit()),
 	SilenceErrors: true,
 	SilenceUsage:  true,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		if len(args) != 1 {
-			return errors.New("A PR must be specified.")
+			return errors.New("A URL must be specified.")
 		}
-		pullRequestURL := args[0]
-		match := pullRequestRegex.FindStringSubmatch(pullRequestURL)
+
+		url := args[0]
+
+		match := baseRegex.FindStringSubmatch(url)
+		if match == nil {
+			return errors.New("Invalid URL format.")
+		}
 
 		repository, err := repository.Parse(match[1])
 		if err != nil {
-			return err
-		}
-
-		pullRequestNumber, err := strconv.Atoi(match[2])
-		if err != nil {
-			panic(err)
+			return errors.Wrap(err, "Failed to parse repository from URL")
 		}
 
 		ghClient, err := client.NewClient(repository.Host())
@@ -58,15 +60,32 @@ var rootCmd = &cobra.Command{
 		}
 		ghClient = paginated.WrapClient(ghClient)
 
-		pullRequest, err := pull_request.GetPullRequest(ghClient, repository, pullRequestNumber)
-		if err != nil {
-			return err
+		var headRefOrSha string
+
+		pullRequestMatch := pullRequestRegex.FindStringSubmatch(match[2])
+		commitMatch := commitRegex.FindStringSubmatch(match[2])
+		if pullRequestMatch != nil {
+			pullRequestNumber, err := strconv.Atoi(pullRequestMatch[1])
+			if err != nil {
+				panic(err)
+			}
+
+			pullRequest, err := pull_request.GetPullRequest(ghClient, repository, pullRequestNumber)
+			if err != nil {
+				return err
+			}
+
+			headRefOrSha = pullRequest.Head.Ref
+		} else if commitMatch != nil {
+			headRefOrSha = commitMatch[1]
+		} else {
+			return errors.New("Invalid URL format. Expected a pull request or commit URL.")
 		}
 
 		for {
 			allSuitesGreen := true
 
-			checkSuites, err := check_suites.GetCheckSuites(ghClient, repository, pullRequest.Head.Ref)
+			checkSuites, err := check_suites.GetCheckSuites(ghClient, repository, headRefOrSha)
 			if err != nil {
 				return err
 			}
