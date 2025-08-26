@@ -58,7 +58,7 @@ require (
 	github.com/charmbracelet/x/term v0.2.1 // indirect
 	github.com/ckaznocha/intrange v0.3.1 // indirect
 	github.com/cli/safeexec v1.0.0 // indirect
-	github.com/cli/shurcooL-graphql v0.0.2 // indirect
+	github.com/cli/shurcooL-graphql v0.0.4 // indirect
 	github.com/curioswitch/go-reassign v0.3.0 // indirect
 	github.com/daixiang0/gci v0.13.7 // indirect
 	github.com/dave/dst v0.27.3 // indirect
@@ -208,7 +208,6 @@ require (
 	go.uber.org/zap v1.27.0 // indirect
 	golang.org/x/exp/typeparams v0.0.0-20250620022241-b7579e27df2b // indirect
 	golang.org/x/mod v0.27.0 // indirect
-	golang.org/x/net v0.43.0 // indirect
 	golang.org/x/sync v0.16.0 // indirect
 	golang.org/x/sys v0.35.0 // indirect
 	golang.org/x/term v0.34.0 // indirect
