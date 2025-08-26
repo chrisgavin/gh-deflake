@@ -8,3 +8,5 @@ permissions:
 jobs:
   dependabot-automerge:
     uses: chrisgavin/workflows/.github/workflows/dependabot-automerge.yaml@ec72e4764f186c1ea95076b867a122575ba0bde2
+    secrets:
+      token: ${{ secrets.AUTOMERGE_TOKEN }}
