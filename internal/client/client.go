@@ -1,8 +1,8 @@
 package client
 
 import (
-	"github.com/cli/go-gh"
-	"github.com/cli/go-gh/pkg/api"
+	"github.com/cli/go-gh/v2"
+	"github.com/cli/go-gh/v2/pkg/api"
 	"github.com/pkg/errors"
 )
 

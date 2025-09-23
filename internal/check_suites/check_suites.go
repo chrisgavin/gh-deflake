@@ -4,8 +4,8 @@ import (
 	"fmt"
 
 	"github.com/chrisgavin/gh-deflake/internal/actions"
-	"github.com/cli/go-gh/pkg/api"
-	"github.com/cli/go-gh/pkg/repository"
+	"github.com/cli/go-gh/v2/pkg/api"
+	"github.com/cli/go-gh/v2/pkg/repository"
 	"github.com/pkg/errors"
 )
 

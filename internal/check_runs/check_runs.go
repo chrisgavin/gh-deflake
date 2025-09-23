@@ -3,8 +3,8 @@ package check_runs
 import (
 	"fmt"
 
-	"github.com/cli/go-gh/pkg/api"
-	"github.com/cli/go-gh/pkg/repository"
+	"github.com/cli/go-gh/v2/pkg/api"
+	"github.com/cli/go-gh/v2/pkg/repository"
 	"github.com/pkg/errors"
 )
 
