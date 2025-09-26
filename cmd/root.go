@@ -13,7 +13,7 @@ import (
 	"github.com/chrisgavin/gh-deflake/internal/client"
 	"github.com/chrisgavin/gh-deflake/internal/pull_request"
 	"github.com/chrisgavin/gh-deflake/internal/version"
-	"github.com/chrisgavin/paginated-go-gh/pkg/paginated"
+	"github.com/chrisgavin/paginated-go-gh/v2/pkg/paginated"
 	"github.com/cli/go-gh/pkg/repository"
 	"github.com/pkg/errors"
 	log "github.com/sirupsen/logrus"
