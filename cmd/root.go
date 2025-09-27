@@ -13,7 +13,6 @@ import (
 	"github.com/chrisgavin/gh-deflake/internal/client"
 	"github.com/chrisgavin/gh-deflake/internal/pull_request"
 	"github.com/chrisgavin/gh-deflake/internal/version"
-	"github.com/chrisgavin/paginated-go-gh/pkg/paginated"
 	"github.com/cli/go-gh/v2/pkg/repository"
 	"github.com/pkg/errors"
 	log "github.com/sirupsen/logrus"
@@ -54,11 +53,10 @@ var rootCmd = &cobra.Command{
 			return errors.Wrap(err, "Failed to parse repository from URL")
 		}
 
-		ghClient, err := client.NewClient(repository.Host())
+		ghClient, err := client.NewClient(repository.Host)
 		if err != nil {
 			return err
 		}
-		ghClient = paginated.WrapClient(ghClient)
 
 		var headRefOrSha string
 
