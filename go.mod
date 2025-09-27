@@ -4,8 +4,8 @@ go 1.24.5
 
 require (
 	github.com/AlecAivazis/survey/v2 v2.3.7
-	github.com/chrisgavin/paginated-go-gh v1.0.0
-	github.com/cli/go-gh v1.2.1
+	github.com/chrisgavin/paginated-go-gh/v2 v2.0.1
+	github.com/cli/go-gh/v2 v2.12.2
 	github.com/pkg/errors v0.9.1
 	github.com/sirupsen/logrus v1.9.3
 	github.com/spf13/cobra v1.10.1
@@ -54,7 +54,7 @@ require (
 	github.com/cespare/xxhash/v2 v2.3.0 // indirect
 	github.com/charithe/durationcheck v0.0.10 // indirect
 	github.com/charmbracelet/colorprofile v0.3.2 // indirect
-	github.com/charmbracelet/lipgloss v1.1.0 // indirect
+	github.com/charmbracelet/lipgloss v1.1.1-0.20250319133953-166f707985bc // indirect
 	github.com/charmbracelet/x/ansi v0.10.1 // indirect
 	github.com/charmbracelet/x/cellbuf v0.0.13 // indirect
 	github.com/charmbracelet/x/term v0.2.1 // indirect
