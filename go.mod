@@ -1,11 +1,11 @@
 module github.com/chrisgavin/gh-deflake
 
-go 1.24.5
+go 1.25.0
 
 require (
 	github.com/AlecAivazis/survey/v2 v2.3.7
 	github.com/chrisgavin/paginated-go-gh/v2 v2.0.1
-	github.com/cli/go-gh/v2 v2.12.2
+	github.com/cli/go-gh/v2 v2.13.0
 	github.com/pkg/errors v0.9.1
 	github.com/sirupsen/logrus v1.9.3
 	github.com/spf13/cobra v1.10.1
