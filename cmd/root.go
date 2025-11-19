@@ -23,6 +23,7 @@ type rootFlagFields struct {
 }
 
 var rootFlags = rootFlagFields{}
+var force = false
 
 var SilentErr = errors.New("SilentErr")
 
@@ -80,6 +81,8 @@ var rootCmd = &cobra.Command{
 			return errors.New("Invalid URL format. Expected a pull request or commit URL.")
 		}
 
+		needsRerun := force
+
 		for {
 			allSuitesGreen := true
 
@@ -100,11 +103,19 @@ var rootCmd = &cobra.Command{
 					log.Warnf("Check suite is not rerunnable: %d", checkSuite.ID)
 					continue
 				}
+
 				checkRuns, err := check_runs.GetCheckRuns(ghClient, repository, checkSuite.ID)
 				if err != nil {
 					return err
 				}
-				failedCheckRuns := check_runs.FilterFailedCheckRuns(checkRuns)
+
+				var failedCheckRuns []check_runs.CheckRun
+				if needsRerun {
+					failedCheckRuns = checkRuns.CheckRuns
+				} else {
+					failedCheckRuns = check_runs.FilterFailedCheckRuns(checkRuns)
+				}
+
 				if len(failedCheckRuns) > 0 {
 					allSuitesGreen = false
 				}
@@ -135,6 +146,7 @@ var rootCmd = &cobra.Command{
 			}
 
 			time.Sleep(1 * time.Minute)
+			needsRerun = false
 		}
 
 		return nil
@@ -148,6 +160,8 @@ func (f *rootFlagFields) Init(cmd *cobra.Command) error {
 		cmd.PrintErr(cmd.UsageString())
 		return SilentErr
 	})
+
+	rootCmd.Flags().BoolVar(&force, "force", false, "force a re-run, regardless of statuses")
 
 	return nil
 }
