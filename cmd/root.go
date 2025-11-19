@@ -92,18 +92,16 @@ var rootCmd = &cobra.Command{
 			}
 
 			for _, checkSuite := range checkSuites.CheckSuites {
-				if !needsRerun {
-					// A check suite is created for every installed GitHub App, but some don't run any checks so these remain permanently queued.
-					if checkSuite.LatestCheckRunsCount == 0 {
-						continue
-					}
-					if checkSuite.IsCompleted() && !checkSuite.IsSuccessful() && !checkSuite.RunsRerequestable && checkSuite.App.Slug != actions.ActionsAppSlug {
-						log.Warnf("Check suite is not rerunnable: %d", checkSuite.ID)
-						continue
-					}
+				// A check suite is created for every installed GitHub App, but some don't run any checks so these remain permanently queued.
+				if checkSuite.LatestCheckRunsCount == 0 {
+					continue
 				}
 				if !checkSuite.IsCompleted() || !checkSuite.IsSuccessful() {
 					allSuitesGreen = false
+				}
+				if checkSuite.IsCompleted() && !checkSuite.IsSuccessful() && !checkSuite.RunsRerequestable && checkSuite.App.Slug != actions.ActionsAppSlug {
+					log.Warnf("Check suite is not rerunnable: %d", checkSuite.ID)
+					continue
 				}
 
 				checkRuns, err := check_runs.GetCheckRuns(ghClient, repository, checkSuite.ID)
