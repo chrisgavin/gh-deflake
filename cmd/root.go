@@ -46,12 +46,12 @@ var rootCmd = &cobra.Command{
 
 		match := baseRegex.FindStringSubmatch(url)
 		if match == nil {
-			return errors.New("Invalid URL format.")
+			return errors.Errorf("Invalid URL format: %s", url)
 		}
 
 		repository, err := repository.Parse(match[1])
 		if err != nil {
-			return errors.Wrap(err, "Failed to parse repository from URL")
+			return errors.Wrapf(err, "Failed to parse repository from URL: %s", url)
 		}
 
 		ghClient, err := client.NewClient(repository.Host)
@@ -78,7 +78,7 @@ var rootCmd = &cobra.Command{
 		} else if commitMatch != nil {
 			headRefOrSha = commitMatch[1]
 		} else {
-			return errors.New("Invalid URL format. Expected a pull request or commit URL.")
+			return errors.Errorf("Invalid URL format, expected a pull request or commit URL: %s", url)
 		}
 
 		needsRerun := force
