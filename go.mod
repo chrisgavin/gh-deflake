@@ -153,7 +153,7 @@ require (
 	github.com/nishanths/exhaustive v0.12.0 // indirect
 	github.com/nishanths/predeclared v0.2.2 // indirect
 	github.com/nunnatsa/ginkgolinter v0.23.0 // indirect
-	github.com/pelletier/go-toml/v2 v2.4.0 // indirect
+	github.com/pelletier/go-toml/v2 v2.4.1 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/prometheus/client_golang v1.23.2 // indirect
 	github.com/prometheus/client_model v0.6.2 // indirect
