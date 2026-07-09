@@ -1,6 +1,8 @@
 # gh-deflake
 A [GitHub CLI extension](https://cli.github.com/) for rerunning flaky CI until it passes.
 
+deflake will iterate the check suites/runs on the pr, find failing ones, and re-run them.
+
 ## Installation
 
 ```sh
