@@ -27,7 +27,7 @@ var force = false
 
 var SilentErr = errors.New("SilentErr")
 
-var baseRegex = regexp.MustCompile(`^(https?://[^/]+/[a-zA-Z0-9-]+/[a-zA-Z0-9-]+)/(.*)$`)
+var baseRegex = regexp.MustCompile(`^(https?://[^/]+/[a-zA-Z0-9-_]+/[a-zA-Z0-9-_]+)/(.*)$`)
 var pullRequestRegex = regexp.MustCompile(`^pull/([0-9]+)$`)
 var commitRegex = regexp.MustCompile(`^commits?/([a-f0-9]+)$`)
 
