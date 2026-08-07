@@ -141,7 +141,7 @@ var rootCmd = &cobra.Command{
 			}
 
 			if allSuitesGreen {
-				log.Info("All check suites are now green.")
+				log.Infof("All check suites are now green. %s", url)
 				break
 			}
 
