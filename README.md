@@ -8,7 +8,7 @@ E.g.
 $ gh deflake https://github.com/myorg/myrepo/pull/42
 INFO[0004] Rerun triggered for actions workflow run https://github.com/myorg/myrepo/actions/runs/1234/job/12345 (123456). 
 INFO[0004] Rerun triggered for actions workflow run https://github.com/myorg/myrepo/actions/runs/5678/job/56789 (5678910). 
-INFO[0010] All check suites are now green.
+INFO[0010] All check suites are now green. https://github.com/myorg/myrepo/pull/42
 ```
 
 ## Installation
