@@ -196,7 +196,7 @@ require (
 	github.com/tomnomnom/linkheader v0.0.0-20250811210735-e5fe3b51442e // indirect
 	github.com/ultraware/funlen v0.2.0 // indirect
 	github.com/ultraware/whitespace v0.2.0 // indirect
-	github.com/uudashr/gocognit v1.2.2 // indirect
+	github.com/uudashr/gocognit v1.3.0 // indirect
 	github.com/uudashr/iface v1.5.3 // indirect
 	github.com/xen0n/gosmopolitan v1.3.0 // indirect
 	github.com/xo/terminfo v1.2.0 // indirect
